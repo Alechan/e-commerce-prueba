@@ -29,11 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     var carritoGuardadoEnLocalStorage = localStorage.getItem(nombreCarritoEnLocalStorage);
     if (carritoGuardadoEnLocalStorage != null) {
         // Ale: Si había algo guardado en el local storage, leerlo
-        // 1) Pasar de "json serializado en String" a "objeto JavaScript"
+        // Ale; 1) Pasar de "json serializado en String" a "objeto JavaScript"
         carrito = JSON.parse(carritoGuardadoEnLocalStorage)
+        // Ale: 2) Modificamos al objeto carrito entonces tenemos que volver a "pintar el carrito" en html
+        pintarCarrito()
     }
-    // Ale: modificamos al objeto carrito entonces tenemos que volver a "pintar el carrito" en html
-    pintarCarrito()
+
 })
 
 const fetchData = async () => {
