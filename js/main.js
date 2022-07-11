@@ -1,5 +1,12 @@
 //JAVASCRIPT
 
+// Constantes
+const nombreCarritoEnLocalStorage = 'carrito'
+
+// Variables globales
+let carrito = {}
+
+
 //Alert inicio de pagina
 swal("Bienvenido a nuestro E-Commerce")
 
@@ -18,12 +25,70 @@ const advertenciaVaciar = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchData()
+    // Ale: leer del localStorage a ver si hay algo guardado del carrito
+    var carritoGuardadoEnLocalStorage = localStorage.getItem(nombreCarritoEnLocalStorage);
+    if (carritoGuardadoEnLocalStorage != null) {
+        // Ale: Si había algo guardado en el local storage, leerlo
+        // 1) Pasar de "json serializado en String" a "objeto JavaScript"
+        carrito = JSON.parse(carritoGuardadoEnLocalStorage)
+    }
+    // Ale: modificamos al objeto carrito entonces tenemos que volver a "pintar el carrito" en html
+    pintarCarrito()
 })
 
 const fetchData = async () => {
     try {
-        const res = await fetch('api.json')
-        const data = await res.json()
+        const data = [
+            {
+              "precio": 1500,
+              "id": 1,
+              "title": "Iphone 12",
+              "thumbnailUrl": "assests/iphone-12.jpg"
+            },
+            {
+              "precio": 1300,
+              "id": 2,
+              "title": "Iphone 11",
+              "thumbnailUrl": "assests/iphone-11.jpg"
+            },
+            {
+              "precio": 1100,
+              "id": 3,
+              "title": "Iphone X",
+              "thumbnailUrl": "assests/iphone-X.jpg"
+            },
+            {
+              "precio": 1400,
+              "id": 4,
+              "title": "Galaxy S22",
+              "thumbnailUrl": "assests/Galaxy-s22.jpg"
+            },
+            {
+              "precio": 1200,
+              "id": 5,
+              "title": "Galaxy S21",
+              "thumbnailUrl": "assests/galaxy-s21.jpg"
+            },
+            {
+              "precio": 1100,
+              "id": 6,
+              "title": "Galaxy S20",
+              "thumbnailUrl": "assests/galaxy-s20.jpg"
+            },
+            {
+              "precio": 1100,
+              "id": 7,
+              "title": "Galaxy Note20",
+              "thumbnailUrl": "assests/galaxy-note-20.jpg"
+            },
+            {
+              "precio": 650,
+              "id": 8,
+              "title": "Galaxy A53",
+              "thumbnailUrl": "assests/galaxy-a53.jpg"
+            }
+          ]
+        // const data = await res.json()
         // console.log(data)
         pintarProductos(data)
         detectarBotones(data)
@@ -49,7 +114,6 @@ const pintarProductos = (data) => {
     contendorProductos.appendChild(fragment)
 }
 
-let carrito = {}
 
 const detectarBotones = (data) => {
     const botones = document.querySelectorAll('.card button')
@@ -64,6 +128,10 @@ const detectarBotones = (data) => {
             }
             carrito[producto.id] = { ...producto }
             // console.log('carrito', carrito)
+
+            // Ale: Guardar carrito en el localStorage
+            guardarCarritoEnLocalStorage()
+
             pintarCarrito()
             mostrarAlert();
         })
@@ -169,5 +237,12 @@ const accionBotones = () => {
             pintarCarrito()
         })
     })
+}
+
+function guardarCarritoEnLocalStorage() {
+    // Ale: 1) Pasar de "objeto JavaScript" a "string serializado como JSON"
+    const carritoComoJSONString = JSON.stringify(carrito)
+    // Ale: 2) Guardar el string en localStorage en la clave (key) "carrito" (donde vamos a ir a buscarla)
+    localStorage.setItem(nombreCarritoEnLocalStorage, carritoComoJSONString)
 }
 
