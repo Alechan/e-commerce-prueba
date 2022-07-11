@@ -221,6 +221,7 @@ const accionBotones = () => {
             const producto = carrito[btn.dataset.id]
             producto.cantidad ++
             carrito[btn.dataset.id] = { ...producto }
+            guardarCarritoEnLocalStorage()
             pintarCarrito();
             
         })
@@ -235,6 +236,7 @@ const accionBotones = () => {
             } else {
                 carrito[btn.dataset.id] = { ...producto }
             }
+            guardarCarritoEnLocalStorage()
             pintarCarrito()
         })
     })
